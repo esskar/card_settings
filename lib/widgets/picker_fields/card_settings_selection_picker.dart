@@ -220,6 +220,7 @@ class _CardSettingsListPickerState extends FormFieldState<String> {
                     : Text(widget?.label),
                 contentWidget: Text(
                   content,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.subtitle1.copyWith(
                       color: (value == null)
                           ? Theme.of(context).hintColor

@@ -785,7 +785,7 @@ class ExampleFormState extends State<ExampleForm> {
       initialValue: _ponyModel.style,
       hintText: 'Select One',
       autovalidate: _autoValidate,
-      options: <String>['Majestic', 'Scrawny', 'Sleek'],
+      options: <String>['Majesticxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 'Scrawny', 'Sleek'],
       icons: <Icon>[
         Icon(Icons.sort),
         Icon(Icons.clear_all),

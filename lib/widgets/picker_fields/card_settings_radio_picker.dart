@@ -113,7 +113,6 @@ class _CardSettingsRadioPickerState extends FormFieldState<String> {
       context: context,
       builder: (BuildContext context) {
         return _buildCupertinoBottomPicker(
-          context,
           CupertinoPicker(
             scrollController: scrollController,
             itemExtent: kPickerItemHeight,
@@ -156,15 +155,15 @@ class _CardSettingsRadioPickerState extends FormFieldState<String> {
     );
   }
 
-  Widget _buildCupertinoBottomPicker(BuildContext context, Widget picker) {
+  Widget _buildCupertinoBottomPicker(Widget picker) {
     return Container(
       height: kPickerSheetHeight,
       padding: const EdgeInsets.only(top: 6.0),
       color: CupertinoColors.white,
       child: DefaultTextStyle(
-        style: TextStyle(
+        style: const TextStyle(
           color: CupertinoColors.black,
-          fontSize: 22.0 * MediaQuery.of(context).textScaleFactor,
+          fontSize: 22.0,
         ),
         child: GestureDetector(
           // Blocks taps from propagating to the modal sheet and popping.

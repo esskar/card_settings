@@ -224,10 +224,10 @@ class _FullScreenSelectState extends State<FullScreenSelect> {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: TextStyle(
+      style: const TextStyle(
         fontFamily: '.SF UI Text',
         inherit: false,
-        fontSize: 17.0 * MediaQuery.of(context).textScaleFactor,
+        fontSize: 17.0,
         color: CupertinoColors.black,
       ),
       child: Scaffold(

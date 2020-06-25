@@ -196,6 +196,7 @@ class _CardSettingsTimePickerState extends FormFieldState<TimeOfDay> {
         label: widget?.label ?? "Time",
         labelAlign: widget?.labelAlign,
         labelWidth: widget?.labelWidth,
+        enabled: widget?.enabled,
         visible: widget?.visible ?? true,
         icon: widget?.icon ?? Icon(Icons.event),
         requiredIndicator: widget?.requiredIndicator,

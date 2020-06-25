@@ -94,15 +94,15 @@ class _CardSettingsTimePickerState extends FormFieldState<TimeOfDay> {
       return materialSettingsTimePicker();
   }
 
-  Widget _buildBottomPicker(BuildContext context, Widget picker) {
+  Widget _buildBottomPicker(Widget picker) {
     return Container(
       height: kPickerSheetHeight,
       padding: const EdgeInsets.only(top: 6.0),
       color: CupertinoColors.white,
       child: DefaultTextStyle(
-        style: TextStyle(
+        style: const TextStyle(
           color: CupertinoColors.black,
-          fontSize: 22.0 * MediaQuery.of(context).textScaleFactor,
+          fontSize: 22.0,
         ),
         child: GestureDetector(
           // Blocks taps from propagating to the modal sheet and popping.
@@ -121,7 +121,6 @@ class _CardSettingsTimePickerState extends FormFieldState<TimeOfDay> {
       context: context,
       builder: (BuildContext context) {
         return _buildBottomPicker(
-          context,
           CupertinoDatePicker(
             mode: CupertinoDatePickerMode.time,
             initialDateTime: value == null

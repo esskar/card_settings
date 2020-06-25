@@ -202,6 +202,7 @@ class _CardSettingsRadioPickerState extends FormFieldState<String> {
   }
 
   Widget cupertinoSettingsListPicker(String content) {
+    final ls = labelStyle(context, widget?.enabled ?? true);
     return Container(
       child: widget?.visible == false
           ? null
@@ -215,8 +216,8 @@ class _CardSettingsRadioPickerState extends FormFieldState<String> {
                       CardSettings.of(context).labelWidth ??
                       120.0,
                   child: widget?.requiredIndicator != null
-                      ? Text((widget?.label ?? "") + ' *')
-                      : Text(widget?.label),
+                      ? Text((widget?.label ?? "") + ' *', style: ls,)
+                      : Text(widget?.label, style: ls,),
                 ),
                 contentWidget: Text(
                   content,

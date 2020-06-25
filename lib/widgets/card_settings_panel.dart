@@ -6,6 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 
+typedef CustomBuilder = Widget Function(
+    BuildContext context,
+    List<CardSettingsSection> children,
+    bool isCupertino,
+    double cardElevation,
+    double padding,
+    bool shrinkWrap);
+
 /// This is the card wrapper that all the field controls are placed into
 class CardSettings extends InheritedWidget {
   CardSettings({
@@ -20,11 +28,10 @@ class CardSettings extends InheritedWidget {
     List<CardSettingsSection> children,
     this.showMaterialonIOS: false,
     this.shrinkWrap = false,
-    this.context,
   }) : super(
           key: key,
-          child: _buildChild(context, children, showMaterialonIOS,
-              cardElevation, padding, shrinkWrap, false),
+          child: _buildChild(children, showMaterialonIOS, cardElevation,
+              padding, shrinkWrap, false),
         );
 
   // constructor that wraps each section in it's own card
@@ -40,11 +47,46 @@ class CardSettings extends InheritedWidget {
     List<CardSettingsSection> children,
     this.showMaterialonIOS: false,
     this.shrinkWrap = true,
-    this.context,
   }) : super(
           key: key,
-          child: _buildChild(context, children, showMaterialonIOS,
-              cardElevation, padding, shrinkWrap, true),
+          child: _buildChild(children, showMaterialonIOS, cardElevation,
+              padding, shrinkWrap, true),
+        );
+
+  CardSettings.custom({
+    Key key,
+    this.labelAlign,
+    this.labelWidth,
+    this.labelPadding,
+    this.labelSuffix,
+    this.contentAlign: TextAlign.left,
+    this.padding: 8.0,
+    this.cardElevation: 5.0,
+    List<CardSettingsSection> children,
+    this.showMaterialonIOS: false,
+    this.shrinkWrap = false,
+    @required BuildContext context,
+    @required CustomBuilder builder,
+  })  : assert(context != null),
+        assert(builder != null),
+        super(
+          key: key,
+          child: builder(
+                context,
+                children,
+                showCupertino(null, showMaterialonIOS),
+                cardElevation,
+                padding,
+                shrinkWrap,
+              ) ??
+              _buildChild(
+                children,
+                showMaterialonIOS,
+                cardElevation,
+                padding,
+                shrinkWrap,
+                false,
+              ),
         );
 
   final TextAlign labelAlign;
@@ -56,7 +98,6 @@ class CardSettings extends InheritedWidget {
   final double cardElevation;
   final bool shrinkWrap;
   final bool showMaterialonIOS;
-  final BuildContext context;
 
   static CardSettings of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<CardSettings>();
@@ -74,7 +115,6 @@ class CardSettings extends InheritedWidget {
   }
 
   static Widget _buildChild(
-      BuildContext context,
       List<CardSettingsSection> children,
       bool showMaterialonIOS,
       double cardElevation,
@@ -84,49 +124,37 @@ class CardSettings extends InheritedWidget {
     return (showCupertino(null, showMaterialonIOS))
         ? _buildCupertinoWrapper(children, shrinkWrap)
         : _buildMaterialWrapper(
-            context,
-            children,
-            padding,
-            cardElevation,
-            shrinkWrap,
-            sectioned,
-          );
+            children, padding, cardElevation, shrinkWrap, sectioned);
   }
 
-  static Widget _buildMaterialWrapper(
-      BuildContext context,
-      List<CardSettingsSection> children,
-      double padding,
-      double cardElevation,
-      bool shrinkWrap,
-      bool sectioned) {
-    final isInSafeArea =
-        context?.findAncestorWidgetOfExactType<SafeArea>() != null;
-
-    ListView listView;
+  static Widget _buildMaterialWrapper(List<CardSettingsSection> children,
+      double padding, double cardElevation, bool shrinkWrap, bool sectioned) {
     if (sectioned) {
-      listView = ListView(
-        children: _buildMaterialSections(children, cardElevation, padding),
-        shrinkWrap: shrinkWrap,
+      return SafeArea(
+        child: ListView(
+          children: _buildMaterialSections(children, cardElevation, padding),
+          shrinkWrap: shrinkWrap,
+        ),
       );
     } else {
-      listView = ListView(
-        shrinkWrap: shrinkWrap,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(padding),
-            child: Card(
-              margin: EdgeInsets.all(0.0),
-              elevation: cardElevation,
-              child: Column(
-                children: children,
+      return SafeArea(
+        child: ListView(
+          shrinkWrap: shrinkWrap,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(padding),
+              child: Card(
+                margin: EdgeInsets.all(0.0),
+                elevation: cardElevation,
+                child: Column(
+                  children: children,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
-    return isInSafeArea ? listView : SafeArea(child: listView);
   }
 
   static Widget _buildCupertinoWrapper(

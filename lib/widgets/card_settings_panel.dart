@@ -20,10 +20,11 @@ class CardSettings extends InheritedWidget {
     List<CardSettingsSection> children,
     this.showMaterialonIOS: false,
     this.shrinkWrap = false,
+    this.context,
   }) : super(
           key: key,
-          child: _buildChild(children, showMaterialonIOS, cardElevation,
-              padding, shrinkWrap, false),
+          child: _buildChild(context, children, showMaterialonIOS,
+              cardElevation, padding, shrinkWrap, false),
         );
 
   // constructor that wraps each section in it's own card
@@ -39,10 +40,11 @@ class CardSettings extends InheritedWidget {
     List<CardSettingsSection> children,
     this.showMaterialonIOS: false,
     this.shrinkWrap = true,
+    this.context,
   }) : super(
           key: key,
-          child: _buildChild(children, showMaterialonIOS, cardElevation,
-              padding, shrinkWrap, true),
+          child: _buildChild(context, children, showMaterialonIOS,
+              cardElevation, padding, shrinkWrap, true),
         );
 
   final TextAlign labelAlign;
@@ -54,6 +56,7 @@ class CardSettings extends InheritedWidget {
   final double cardElevation;
   final bool shrinkWrap;
   final bool showMaterialonIOS;
+  final BuildContext context;
 
   static CardSettings of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<CardSettings>();
@@ -71,6 +74,7 @@ class CardSettings extends InheritedWidget {
   }
 
   static Widget _buildChild(
+      BuildContext context,
       List<CardSettingsSection> children,
       bool showMaterialonIOS,
       double cardElevation,
@@ -80,37 +84,49 @@ class CardSettings extends InheritedWidget {
     return (showCupertino(null, showMaterialonIOS))
         ? _buildCupertinoWrapper(children, shrinkWrap)
         : _buildMaterialWrapper(
-            children, padding, cardElevation, shrinkWrap, sectioned);
+            context,
+            children,
+            padding,
+            cardElevation,
+            shrinkWrap,
+            sectioned,
+          );
   }
 
-  static Widget _buildMaterialWrapper(List<CardSettingsSection> children,
-      double padding, double cardElevation, bool shrinkWrap, bool sectioned) {
+  static Widget _buildMaterialWrapper(
+      BuildContext context,
+      List<CardSettingsSection> children,
+      double padding,
+      double cardElevation,
+      bool shrinkWrap,
+      bool sectioned) {
+    final isInSafeArea =
+        context?.findAncestorWidgetOfExactType<SafeArea>() != null;
+
+    ListView listView;
     if (sectioned) {
-      return SafeArea(
-        child: ListView(
-          children: _buildMaterialSections(children, cardElevation, padding),
-          shrinkWrap: shrinkWrap,
-        ),
+      listView = ListView(
+        children: _buildMaterialSections(children, cardElevation, padding),
+        shrinkWrap: shrinkWrap,
       );
     } else {
-      return SafeArea(
-        child: ListView(
-          shrinkWrap: shrinkWrap,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(padding),
-              child: Card(
-                margin: EdgeInsets.all(0.0),
-                elevation: cardElevation,
-                child: Column(
-                  children: children,
-                ),
+      listView = ListView(
+        shrinkWrap: shrinkWrap,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(padding),
+            child: Card(
+              margin: EdgeInsets.all(0.0),
+              elevation: cardElevation,
+              child: Column(
+                children: children,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
+    return isInSafeArea ? listView : SafeArea(child: listView);
   }
 
   static Widget _buildCupertinoWrapper(

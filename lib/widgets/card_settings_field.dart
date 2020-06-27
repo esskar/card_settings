@@ -212,7 +212,13 @@ class CardSettingsField extends StatelessWidget {
             padding: EdgeInsets.only(left: 10),
             alignment: Alignment.centerRight,
             child: (pickerIcon != null)
-                ? (enabled ?  Icon(pickerIcon, size: 20) : Icon(pickerIcon, size: 20, color: Theme.of(context).disabledColor,))
+                ? (Icon(
+                    pickerIcon,
+                    size: 20,
+                    color: enabled
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).disabledColor,
+                  ))
                 : Text(
                     unitLabel,
                     style: TextStyle(fontStyle: FontStyle.italic),

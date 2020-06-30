@@ -14,7 +14,6 @@ class CardSettingsField extends StatelessWidget {
     this.pickerIcon,
     this.labelWidth,
     this.contentOnNewLine = false,
-    this.unitLabel,
     this.errorText,
     this.visible: true,
     this.labelAlign,
@@ -23,7 +22,6 @@ class CardSettingsField extends StatelessWidget {
   });
 
   final String label;
-  final String unitLabel;
   final Widget content;
   final IconData pickerIcon;
   final double labelWidth;
@@ -207,23 +205,17 @@ class CardSettingsField extends StatelessWidget {
   }
 
   Widget _buildRightDecoration(BuildContext context) {
-    return (pickerIcon != null || unitLabel != null)
+    return (pickerIcon != null)
         ? Container(
             padding: EdgeInsets.only(left: 10),
             alignment: Alignment.centerRight,
-            child: (pickerIcon != null)
-                ? (Icon(
-                    pickerIcon,
-                    size: 20,
-                    color: enabled
-                        ? Theme.of(context).primaryColor
-                        : Theme.of(context).disabledColor,
-                  ))
-                : Text(
-                    unitLabel,
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-          )
+            child: Icon(
+              pickerIcon,
+              size: 20,
+              color: enabled
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).disabledColor,
+            ))
         : Container();
   }
 }

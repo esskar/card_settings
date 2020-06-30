@@ -415,7 +415,6 @@ class _CardSettingsTextState extends FormFieldState<String> {
       labelAlign: widget?.labelAlign,
       labelWidth: widget?.labelWidth,
       visible: widget?.visible,
-      unitLabel: widget?.unitLabel,
       icon: widget?.icon,
       requiredIndicator: widget?.requiredIndicator,
       contentOnNewLine: widget?.contentOnNewLine ?? false,
@@ -431,9 +430,9 @@ class _CardSettingsTextState extends FormFieldState<String> {
         style: contentStyle(context, value, widget.enabled),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(0.0),
-          border: InputBorder.none,
           errorText: errorText,
           prefixText: widget?.prefixText,
+          suffixText: widget?.unitLabel,
           hintText: widget?.hintText,
           isDense: true,
         ),

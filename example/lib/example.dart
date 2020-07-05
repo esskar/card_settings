@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 
 import 'plumbing/results.dart';
 import 'plumbing/model.dart';
@@ -171,10 +170,6 @@ class ExampleFormState extends State<ExampleForm> {
           instructions: _buildCardSettingsInstructions(),
           children: <Widget>[
             _buildCardSettingsDatePicker(),
-            _buildCardSettingsPhotoPicker(),
-            _buildCardSettingsVideoPicker(),
-            _buildCardSettingsMusicPicker(),
-            _buildCardSettingsFileCustomPicker(),
             _buildCardSettingsTimePicker(),
             _buildCardSettingsCurrency(),
             _buildCardSettingsPhone(),
@@ -273,14 +268,8 @@ class ExampleFormState extends State<ExampleForm> {
             _buildCardSettingsInstructions(),
             CardFieldLayout(<Widget>[
               _buildCardSettingsDatePicker(),
-              _buildCardSettingsPhotoPicker(),
             ]),
             CardFieldLayout(<Widget>[
-              _buildCardSettingsVideoPicker(),
-              _buildCardSettingsMusicPicker(),
-            ]),
-            CardFieldLayout(<Widget>[
-              _buildCardSettingsFileCustomPicker(),
               _buildCardSettingsTimePicker(),
             ]),
             CardFieldLayout(<Widget>[
@@ -440,71 +429,6 @@ class ExampleFormState extends State<ExampleForm> {
         });
         widget.onValueChanged(
             'Show Date', updateJustDate(value, _ponyModel.showDateTime));
-      },
-    );
-  }
-
-  CardSettingsFilePicker _buildCardSettingsPhotoPicker() {
-    return CardSettingsFilePicker(
-      key: _photoKey,
-      icon: Icon(Icons.photo),
-      label: 'Photo',
-      fileType: FileTypeCross.image,
-      initialValue: _ponyModel.photo,
-      onSaved: (value) => _ponyModel.photo = value,
-      onChanged: (value) {
-        setState(() {
-          _ponyModel.photo = value;
-        });
-      },
-    );
-  }
-
-  CardSettingsFilePicker _buildCardSettingsVideoPicker() {
-    return CardSettingsFilePicker(
-      key: _videoKey,
-      icon: Icon(Icons.video_library),
-      label: 'Video',
-      fileType: FileTypeCross.video,
-      initialValue: _ponyModel.video,
-      onSaved: (value) => _ponyModel.video = value,
-      onChanged: (value) {
-        setState(() {
-          _ponyModel.video = value;
-        });
-      },
-    );
-  }
-
-  CardSettingsFilePicker _buildCardSettingsMusicPicker() {
-    return CardSettingsFilePicker(
-      key: _audioKey,
-      icon: Icon(Icons.music_note),
-      label: 'Audio',
-      fileType: FileTypeCross.audio,
-      initialValue: _ponyModel.audio,
-      onSaved: (value) => _ponyModel.audio = value,
-      onChanged: (value) {
-        setState(() {
-          _ponyModel.audio = value;
-        });
-      },
-    );
-  }
-
-  CardSettingsFilePicker _buildCardSettingsFileCustomPicker() {
-    return CardSettingsFilePicker(
-      key: _customFileKey,
-      icon: Icon(Icons.insert_drive_file),
-      label: 'Custom file',
-      fileType: FileTypeCross.custom,
-      fileExtension: '.jpg,.mp4',
-      initialValue: _ponyModel.customFile,
-      onSaved: (value) => _ponyModel.customFile = value,
-      onChanged: (value) {
-        setState(() {
-          _ponyModel.customFile = value;
-        });
       },
     );
   }

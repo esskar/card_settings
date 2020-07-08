@@ -7,19 +7,19 @@ import 'package:flutter/material.dart';
 /// This is the basic layout of a field in a CardSettings view. Typcially, it
 /// will not be used directly.
 class CardSettingsField extends StatelessWidget {
-  CardSettingsField({
-    this.label: 'Label',
-    this.content,
-    this.icon,
-    this.pickerIcon,
-    this.labelWidth,
-    this.contentOnNewLine = false,
-    this.errorText,
-    this.visible: true,
-    this.labelAlign,
-    this.requiredIndicator,
-    this.enabled = true,
-  });
+  CardSettingsField(
+      {this.label: 'Label',
+      this.content,
+      this.icon,
+      this.pickerIcon,
+      this.labelWidth,
+      this.contentOnNewLine = false,
+      this.errorText,
+      this.visible: true,
+      this.labelAlign,
+      this.requiredIndicator,
+      this.enabled = true,
+      this.childFocusNode});
 
   final String label;
   final Widget content;
@@ -32,11 +32,12 @@ class CardSettingsField extends StatelessWidget {
   final Icon icon;
   final Widget requiredIndicator;
   final bool enabled;
+  final FocusNode childFocusNode;
 
   @override
   Widget build(BuildContext context) {
     if (visible) {
-      return Container(
+      final child = Container(
         decoration: BoxDecoration(
           border: Border(
             bottom:
@@ -59,6 +60,14 @@ class CardSettingsField extends StatelessWidget {
           ],
         ),
       );
+
+      return childFocusNode != null
+          ? GestureDetector(
+              child: child,
+              onTap: () {
+                if (enabled) childFocusNode.requestFocus();
+              })
+          : child;
     } else {
       return Container();
     }

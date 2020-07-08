@@ -420,55 +420,50 @@ class _CardSettingsTextState extends FormFieldState<String> {
   }
 
   Widget _buildMaterialTextbox(BuildContext context) {
-    final focusNode = widget?.focusNode ?? FocusNode();
-    return GestureDetector(
-      onTap: () {
-        if (widget.enabled) focusNode.requestFocus();
-      },
-      child: CardSettingsField(
-        label: widget.label,
-        labelAlign: widget?.labelAlign,
-        labelWidth: widget?.labelWidth,
-        visible: widget?.visible,
-        icon: widget?.icon,
-        requiredIndicator: widget?.requiredIndicator,
-        contentOnNewLine: widget?.contentOnNewLine ?? false,
+    return CardSettingsField(
+      label: widget.label,
+      labelAlign: widget?.labelAlign,
+      labelWidth: widget?.labelWidth,
+      visible: widget?.visible,
+      icon: widget?.icon,
+      requiredIndicator: widget?.requiredIndicator,
+      contentOnNewLine: widget?.contentOnNewLine ?? false,
+      enabled: widget.enabled,
+      childFocusNode: widget?.focusNode,
+      content: TextField(
+        controller: _controller,
+        focusNode: widget?.focusNode,
+        keyboardType: widget?.keyboardType,
+        textInputAction: widget?.inputAction,
+        textCapitalization: widget?.textCapitalization,
         enabled: widget.enabled,
-        content: TextField(
-          controller: _controller,
-          focusNode: focusNode,
-          keyboardType: widget?.keyboardType,
-          textInputAction: widget?.inputAction,
-          textCapitalization: widget?.textCapitalization,
-          enabled: widget.enabled,
-          readOnly: !widget.enabled,
-          style: contentStyle(context, value, widget.enabled),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(0.0),
-            errorText: errorText,
-            prefixText: widget?.prefixText,
-            suffixText: widget?.unitLabel,
-            hintText: widget?.hintText,
-            isDense: true,
-          ),
-          textAlign:
-              widget?.contentAlign ?? CardSettings.of(context).contentAlign,
-          autofocus: widget?.autofocus ?? false,
-          obscureText: widget?.obscureText ?? false,
-          autocorrect: widget?.autocorrect ?? true,
-          maxLengthEnforced: widget?.maxLengthEnforced ?? false,
-          maxLines: widget?.numberOfLines,
-          maxLength: (widget?.showCounter ?? false)
-              ? widget?.maxLength
-              : null, // if we want counter use default behavior
-          onChanged: _handleOnChanged,
-          onSubmitted: _onFieldSubmitted,
-          inputFormatters: widget?.inputFormatters ??
-              [
-                // if we don't want the counter, use this maxLength instead
-                LengthLimitingTextInputFormatter(widget?.maxLength)
-              ],
+        readOnly: !widget.enabled,
+        style: contentStyle(context, value, widget.enabled),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0.0),
+          errorText: errorText,
+          prefixText: widget?.prefixText,
+          suffixText: widget?.unitLabel,
+          hintText: widget?.hintText,
+          isDense: true,
         ),
+        textAlign:
+            widget?.contentAlign ?? CardSettings.of(context).contentAlign,
+        autofocus: widget?.autofocus ?? false,
+        obscureText: widget?.obscureText ?? false,
+        autocorrect: widget?.autocorrect ?? true,
+        maxLengthEnforced: widget?.maxLengthEnforced ?? false,
+        maxLines: widget?.numberOfLines,
+        maxLength: (widget?.showCounter ?? false)
+            ? widget?.maxLength
+            : null, // if we want counter use default behavior
+        onChanged: _handleOnChanged,
+        onSubmitted: _onFieldSubmitted,
+        inputFormatters: widget?.inputFormatters ??
+            [
+              // if we don't want the counter, use this maxLength instead
+              LengthLimitingTextInputFormatter(widget?.maxLength)
+            ],
       ),
     );
   }

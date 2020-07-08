@@ -420,6 +420,7 @@ class _CardSettingsTextState extends FormFieldState<String> {
   }
 
   Widget _buildMaterialTextbox(BuildContext context) {
+    final focusNode = widget?.focusNode ?? FocusNode();
     return CardSettingsField(
       label: widget.label,
       labelAlign: widget?.labelAlign,
@@ -429,10 +430,10 @@ class _CardSettingsTextState extends FormFieldState<String> {
       requiredIndicator: widget?.requiredIndicator,
       contentOnNewLine: widget?.contentOnNewLine ?? false,
       enabled: widget.enabled,
-      childFocusNode: widget?.focusNode,
+      childFocusNode: focusNode,
       content: TextField(
         controller: _controller,
-        focusNode: widget?.focusNode,
+        focusNode: focusNode,
         keyboardType: widget?.keyboardType,
         textInputAction: widget?.inputAction,
         textCapitalization: widget?.textCapitalization,

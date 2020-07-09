@@ -28,10 +28,11 @@ class CardSettings extends InheritedWidget {
     List<CardSettingsSection> children,
     this.showMaterialonIOS: false,
     this.shrinkWrap = false,
+    bool scrollable = true
   }) : super(
           key: key,
           child: _buildChild(children, showMaterialonIOS, cardElevation,
-              padding, shrinkWrap, false),
+              padding, shrinkWrap, false, scrollable),
         );
 
   // constructor that wraps each section in it's own card
@@ -50,7 +51,7 @@ class CardSettings extends InheritedWidget {
   }) : super(
           key: key,
           child: _buildChild(children, showMaterialonIOS, cardElevation,
-              padding, shrinkWrap, true),
+              padding, shrinkWrap, true, false),
         );
 
   CardSettings.custom({
@@ -65,6 +66,7 @@ class CardSettings extends InheritedWidget {
     List<CardSettingsSection> children,
     this.showMaterialonIOS: false,
     this.shrinkWrap = false,
+    bool scrollable = true,
     @required BuildContext context,
     @required CustomBuilder builder,
   })  : assert(context != null),
@@ -86,6 +88,7 @@ class CardSettings extends InheritedWidget {
                 padding,
                 shrinkWrap,
                 false,
+                scrollable
               ),
         );
 
@@ -120,15 +123,27 @@ class CardSettings extends InheritedWidget {
       double cardElevation,
       double padding,
       bool shrinkWrap,
-      bool sectioned) {
+      bool sectioned,
+      bool scrollable) {
     return (showCupertino(null, showMaterialonIOS))
         ? _buildCupertinoWrapper(children, shrinkWrap)
         : _buildMaterialWrapper(
-            children, padding, cardElevation, shrinkWrap, sectioned);
+            children,
+            padding,
+            cardElevation,
+            shrinkWrap,
+            sectioned,
+            scrollable,
+          );
   }
 
-  static Widget _buildMaterialWrapper(List<CardSettingsSection> children,
-      double padding, double cardElevation, bool shrinkWrap, bool sectioned) {
+  static Widget _buildMaterialWrapper(
+      List<CardSettingsSection> children,
+      double padding,
+      double cardElevation,
+      bool shrinkWrap,
+      bool sectioned,
+      bool scrollable) {
     if (sectioned) {
       return SafeArea(
         child: ListView(
@@ -136,22 +151,33 @@ class CardSettings extends InheritedWidget {
           shrinkWrap: shrinkWrap,
         ),
       );
-    } else {
+    }
+    if (scrollable) {
       return SafeArea(
-        child: ListView(
-          shrinkWrap: shrinkWrap,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(padding),
-              child: Card(
-                margin: EdgeInsets.all(0.0),
-                elevation: cardElevation,
-                child: Column(
-                  children: children,
-                ),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(padding),
+            child: Card(
+              margin: EdgeInsets.all(0.0),
+              elevation: cardElevation,
+              child: Column(
+                children: children,
               ),
             ),
-          ],
+          ),
+        ),
+      );
+    } else {
+      return SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(padding),
+          child: Card(
+            margin: EdgeInsets.all(0.0),
+            elevation: cardElevation,
+            child: Column(
+              children: children,
+            ),
+          ),
         ),
       );
     }
